@@ -108,6 +108,18 @@
                 android:background="@drawable/myborder"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/exitButton"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="72dp"
+                android:text="Exit"
+                android:background="@drawable/myborder"
+                android:textStyle="bold"
+                android:onClick="exitClick" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
