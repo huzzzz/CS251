@@ -44,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
         ExitButton = (Button) findViewById(R.id.exitButton);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+        if (session.isLoggedIn()){
+            Toast.makeText(getApplicationContext(), "User Logged in as: " + session.getUserDetails().get(0), Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please Log in", Toast.LENGTH_LONG).show();
+        }
         session.checkLogin();
 
         HashMap<String, String> user = session.getUserDetails();
@@ -64,4 +70,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
+

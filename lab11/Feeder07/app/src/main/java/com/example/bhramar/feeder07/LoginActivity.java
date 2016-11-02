@@ -57,16 +57,16 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
         mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         session = new SessionManager(getApplicationContext());
 
@@ -95,6 +95,14 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     /**
@@ -204,12 +212,13 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
     public void onResponse(Call<GsonModels.UserDetails> call, Response<GsonModels.UserDetails> response) {
         if(response.isSuccessful()) {
             GsonModels.UserDetails userDetails = response.body();
-            Toast.makeText(LoginActivity.this, userDetails.getName() + userDetails.getEmail() + userDetails. getRollno(), Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, userDetails.getName() + userDetails.getEmail() + userDetails. getRollno(), Toast.LENGTH_SHORT).show();
             //Use the userDetails
-            if (userDetails.getIslogged()){
+            if (userDetails.getIslogged() && userDetails.getName() != null){
+                showProgress(true);
                 attemptLogin();
             } else {
-                Toast.makeText(LoginActivity.this, "Incorrect Credentials", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Incorrect Credentials", Toast.LENGTH_SHORT).show();
             }
         }
         else {
