@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from polls.views import register, user_login
+from polls.views import login
 
 # urlpatterns = patterns[
 #     # url(r'^about/$', views.about, name='about'),
@@ -9,8 +9,6 @@ from polls.views import register, user_login
 #     # url(r'^category/(?P<category_name_url>\w+)/add_page/$', views.add_page, name='add_page'),
 #      # ADD NEW PATTERN!
 # ]
-
 urlpatterns = [
-	url(r'^register/$', register, name='register'),
-	url(r'^login/$', user_login, name='login'),
+
 ]	

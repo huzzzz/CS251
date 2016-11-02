@@ -1,35 +1,174 @@
+<!-- {% load staticfiles %}
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Feeder<title>
+        <title>Login Page</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src=" {% static 'myscripts.js' %}"></script>
     </head>
-
     <body>
-        <h1>Login to Feeder</h1>
+        <center><h1>Login to Feeder</h1></center>
+        <div class="login-box">
+            <form id="login_form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                Username: <input type="text" name="username" value="" size="50" />
+                <br />
+                Password: <input type="password" name="password" value="" size="50" />
+                <br />
+                <input type="submit" value="submit" />
+            <div class="u-form-group">
+                <input type="email" placeholder="Email"/>
+                Username: {{form.username}}
+            </div>
+            <div class="u-form-group">
+                Password: {{form.password}}
+            </div>
+            </form>
+        </div>
+    </body>
+</html>  -->
+{% load staticfiles %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Feeder Login</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <!-- <script type="text/javascript" src="jquery-3.1.1.min.js"></script> -->
+        <script type="text/javascript" src="file:///cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <!-- <script src=" {% static 'myscripts.js' %}"></script> -->
+    </head>
+    <body>
+<!--         <center><h1>Register with Feeder</h1></center>
 
-        <!-- <form id="login_form" method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            Username:  
-            <br />
-            Password: 
-            <br />
-            <input type="submit" value="submit" />
-        </form> -->
         {% if registered %}
-        <strong>thank you for registering!</strong>
-        <a href="/polls/">Return to the homepage.</a><br />
+          <strong>thank you for registering!</strong>
+        <a href="/polls/">Return to the homepage.</a><br />           
+
         {% else %}
-        polls says: <strong>register here!</strong><br />
+          <h1><strong>Register here!</strong></h1><br />
+  <h2>       -->
 
-        <form id="user_form" method="post" action="/polls/register/"
+    <div class="login-box">
+      
+      <div class="lb-header">
+          <a href="#" class="active" id="login-box-link">Login</a>
+          <a href="#" id="signup-box-link">Sign Up</a>
+      </div>
+      
+
+      <div class="social-login">
+        {% load socialaccount %}
+        <a href="{% provider_login_url "facebook" method="oauth2" %}">
+          <i class="fa fa-facebook fa-lg"></i>
+            Log in with facebook
+        </a>
+
+        <a href="{% provider_login_url "google" method="oauth2" %}">
+            <i class="fa fa-google-plus fa-lg"></i>
+              Log in with Google
+        </a>
+      </div>
+   
+      <form class="email-login" method="POST" action="splogin/"
                 enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="u-form-group">
+        Username: {{form.username}}
+        </div>
+    
+        <div class="u-form-group">
+        Password: {{form.password}}
+        </div>
+            
+        <div class="u-form-group">
+          <button>Log in</button>
+        </div>
+      </form>
+     
+<!-- 
+    <form class="email-signup" method="post" action=""
+                enctype="multipart/form-data">
+        {% csrf_token %}
+ 
+     
+    <div class="u-form-group">
+          Username: {{form.username}}
+        </div>
+      
+        <div class="u-form-group">
+          Email: {{form.email}}       
+        </div>
+      
+        <div class="u-form-group">
+          Password: {{form.password}}       
+        </div>
 
-            {% csrf_token %}
+      <div class="u-form-group">
+        <button>Sign Up</button>
+      </div>
+    
+    </form> 
+ 
+    </div> -->
+    {% endif %}
 
-            <!-- Display each form. The as_p method wraps each element in a paragraph
-                 (<p>) element. This ensures each element appears on a new line,
-                 making everything look neater. -->
-            {{ user_form.as_p }}
+
+    
     </body>
 </html>
+
+<!-- 
+            Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater.
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }} -->
+
+       <!--  <div class="login-box">
+            <div class="lb-header">
+                <a href="#" class="active" id="login-box-link">Login</a>
+                <a hr ef="#" id="signup-box-link">Sign Up</a>
+        </div>
+        <div class="social-login">
+            <a href="#">
+                <i class="fa fa-facebook fa-lg"></i>
+                Login in with facebook
+            </a>
+            
+        </div>
+        <form class="email-login">
+      <div class="u-form-group">
+        <input type="email" placeholder="Email"/>
+      </div>
+      <div class="u-form-group">
+        <input type="password" placeholder="Password"/>
+      </div>
+      <div class="u-form-group">
+        <button>Log in</button>
+      </div>
+      <div class="u-form-group">
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+    </form>
+    <form class="email-signup">
+      <div class="u-form-group">
+        <input type="email" placeholder="Email"/>
+      </div>
+      <div class="u-form-group">
+        <input type="password" placeholder="Password"/>
+      </div>
+        <div class="u-form-group">
+        <input type="password" placeholder="Confirm Password"/>
+        </div>
+        <div class="u-form-group">
+            <button>Sign Up</button>
+        </div>
+        </form>
+    </div>
+
+       
+ <form id="form" method="post" action=""
+                enctype="multipart/form-data">
+  

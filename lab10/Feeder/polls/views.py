@@ -1,101 +1,101 @@
 from django.shortcuts import render
-from polls.forms import UserForm,UserProfileForm 
+from polls.forms import UserForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 
-def user_login(request):
-
-    # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == 'POST':
-        # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
-        username = request.POST['username']
-        password = request.POST['password']
-
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
-
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
-        if user:
-            # Is the account active? It could have been disabled.
-            if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
-                login(request, user)
-                return HttpResponseRedirect('/polls/register')
-            else:
-                # An inactive account was used - no logging in!
-                return HttpResponse("Your Account is disabled.")
+def adminlogin(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('splogin/')
+    else: 
+        if request.method == 'POST':
+            form = UserForm(request.POST)
+            if form.is_valid():
+                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                if user:                       
+                    if user.is_active:
+                        login(request, user)
+                        if user.is_staff:
+                            print("here2")
+                            return HttpResponseRedirect('splogin/')
+                        else:
+                            print("her2")
+                            return HttpResponse('Wrong')
+                    else:
+                        print("he2")
+                        return HttpResponse('Wrong')
+                    return HttpResponse('*Please enter valid Details')                
         else:
-            # Bad login details were provided. So we can't log the user in.
-            print ("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
-
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render(request, 'login.html', {})
-
-
+            form = UserForm()
+        return render(request, 'login.html',  {'form':form})
 
 def register(request):
+    registered = False 
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            user.set_password(user.password)
+            user.save()
+            registered = True
+        else:    
+            form = UserForm()
+    form = UserForm()
+    return render(request, 'register.html', {'form': form, 'registered': registered})
+
+    # else
+
 
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
-    registered = False 
+    # registered = False 
 
-    # If it's a HTTP POST, we're interested in processing form data.
-    if request.method == 'POST':
-        # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+    # # If it's a HTTP POST, we're interested in processing form data.
+    # if request.method == 'POST':
+    #     # Attempt to grab information from the raw form information.
+    #     # Note that we make use of both UserForm and UserProfileForm.
+    #     user_form = UserForm(data=request.POST)
+    #     profile_form = UserProfileForm(data=request.POST)
 
-        # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid():
-            # Save the user's form data to the database.
-            user = user_form.save()
+    #     # If the two forms are valid...
+    #     if user_form.is_valid() and profile_form.is_valid():
+    #         # Save the user's form data to the database.
+    #         user = user_form.save()
 
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
-            user.set_password(user.password)
-            user.save()
+    #         # Now we hash the password with the set_password method.
+    #         # Once hashed, we can update the user object.
+    #         user.set_password(user.password)
+    #         user.save()
 
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems.
-            profile = profile_form.save(commit=False)
-            profile.user = user
+    #         # Now sort out the UserProfile instance.
+    #         # Since we need to set the user attribute ourselves, we set commit=False.
+    #         # This delays saving the model until we're ready to avoid integrity problems.
+    #         profile = profile_form.save(commit=False)
+    #         profile.user = user
 
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+    #         # Did the user provide a profile picture?
+    #         # If so, we need to get it from the input form and put it in the UserProfile model.
+    #         if 'picture' in request.FILES:
+    #             profile.picture = request.FILES['picture']
 
-            # Now we save the UserProfile model instance.
-            profile.save()
-            # Update our variable to tell the template registration was successful.
-            registered = True
+    #         # Now we save the UserProfile model instance.
+    #         profile.save()
+    #         # Update our variable to tell the template registration was successful.
+    #         registered = True
 
-        # Invalid form or forms - mistakes or something else?
-        # Print problems to the terminal.
-        # They'll also be shown to the user.
-        else:
-            print (user_form.errors, profile_form.errors)
+    #     # Invalid form or forms - mistakes or something else?
+    #     # Print problems to the terminal.
+    #     # They'll also be shown to the user.
+    #     else:
+    #         print (user_form.errors, profile_form.errors)
 
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+    # # Not a HTTP POST, so we render our form using two ModelForm instances.
+    # # These forms will be blank, ready for user input.
+    # else:
+    #     user_form = UserForm()
+    #     profile_form = UserProfileForm()
 
-    # Render the template depending on the context.
-    return render(request,
-            'register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    # # Render the template depending on the context.
+    # return render(request,
+    #         'register.html',
+    #         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
