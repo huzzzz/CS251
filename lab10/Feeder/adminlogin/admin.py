@@ -1,5 +1,5 @@
 from django.contrib import admin
-from adminlogin.models import Student, Instructor, FeedbackAns, FeedbackQuestions, Feedback, Assignment, Course
+from adminlogin.models import Student, FeedbackAns, FeedbackQuestions, Feedback, Assignment, Course
 
 admin.site.register(Student)
 admin.site.register(Course)
@@ -8,3 +8,4 @@ admin.site.register(FeedbackQuestions)
 admin.site.register(Feedback)
 admin.site.register(FeedbackAns)
 # Register your models here.
+ 	

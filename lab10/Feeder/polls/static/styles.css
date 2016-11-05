@@ -47,7 +47,7 @@ box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
 }
 .social-login a{
   position:relative;
-  float: left;
+  float: center;
   width:calc(40% - 8px);
   text-decoration: none;
   color: #fff;
@@ -61,7 +61,7 @@ box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
 }
 .social-login a i{
   position: relative;
-  float: left;
+  float: center;
   width: 20px;
   top: 2px;
 }

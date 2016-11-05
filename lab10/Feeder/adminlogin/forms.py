@@ -1,34 +1,41 @@
 from django.contrib.auth.models import User
 from django import forms
-from adminlogin.models import Student, Course, Instructor, Feedback, FeedbackQuestions
+from adminlogin.models import Student, Course, Feedback, FeedbackQuestions
 
 class StudentForm(forms.ModelForm):
 	
 	password = forms.CharField(widget=forms.PasswordInput())
 	class Meta:
 		model = Student
-		fields = ('full_name', 'roll_number', 'department', 'email', 'password', 'gender', 'dob')
+		fields = ('full_name', 'roll_number', 'email', 'password')
 
-class InstructorForm(forms.ModelForm):
+# class InstructorForm(forms.ModelForm):
 
-	class Meta:
-		model = Instructor
-		fields =('department',)
+# 	class Meta:
+# 		model = Instructor
+# 		fields =('department',)
 
 class CourseForm(forms.ModelForm):
 
 	class Meta:
 		model = Course
-		fields = ('name','code','slot','HalfSem', 'Sem', 'Course_Instructor', 'MidSemDate', 'EndSemDate')	
+		fields = ('Course_name','Course_code','Course_slot', 'Course_Sem', 'Course_Instructor', 'Course_MidSemDate', 'Course_EndSemDate')	
 
 class FeedbackForm(forms.ModelForm):
 
 	class Meta:
 		model = Feedback
-		fields = ('feedback_name', 'questions',)
+		fields = ('feedback_name', 'feedback_questions',)
 
 class FeedbackQuestions(forms.ModelForm):
 
 	class Meta:
 		model = FeedbackQuestions
-		fields = ('question')
+		fields = ('question',)
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')

@@ -1,3 +1,32 @@
+<!-- {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Page</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <script src=" {% static 'myscripts.js' %}"></script>
+    </head>
+    <body>
+        <center><h1>Login to Feeder</h1></center>
+        <div class="login-box">
+            <form id="login_form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                Username: <input type="text" name="username" value="" size="50" />
+                <br />
+                Password: <input type="password" name="password" value="" size="50" />
+                <br />
+                <input type="submit" value="submit" />
+            <div class="u-form-group">
+                <input type="email" placeholder="Email"/>
+                Username: {{form.username}}
+            </div>
+            <div class="u-form-group">
+                Password: {{form.password}}
+            </div>
+            </form>
+        </div>
+    </body>
+</html>  -->
 {% load staticfiles %}
 {% load socialaccount %}
 <!DOCTYPE html>
@@ -10,38 +39,38 @@
         <!-- <script src=" {% static 'myscripts.js' %}"></script> -->
     </head>
     <body>
-        <center><h1>Login with Feeder</h1></center>
+<!--         <center><h1>Register with Feeder</h1></center>
 
         {% if registered %}
           <strong>thank you for registering!</strong>
-        <a href="/polls/mainpage/">Return to the homepage.</a><br />           
+        <a href="/polls/">Return to the homepage.</a><br />           
 
         {% else %}
-          
-  <h2>      
-
+          <h1><strong>Register here!</strong></h1><br />
+  <h2>       -->
+  I am here
     <div class="login-box">
       
       <div class="lb-header">
           <a href="#" class="active" id="login-box-link">Login</a>
-          <!-- <a href="#" id="signup-box-link">Sign Up</a> -->
+          <a href="#" id="signup-box-link">Sign Up</a>
       </div>
       
 
       <div class="social-login">
         {% load socialaccount %}
-      <!--   <a href="{% provider_login_url "facebook" method="oauth2" %}">
+        <a href="{% provider_login_url "facebook" method="oauth2" %}">
           <i class="fa fa-facebook fa-lg"></i>
             Log in with facebook
         </a>
- -->
+
         <a href="{% provider_login_url "google" method="oauth2" %}">
             <i class="fa fa-google-plus fa-lg"></i>
               Log in with Google
         </a>
       </div>
    
-      <form class="email-login" method="POST" action="splogin/"
+      <form class="email-login" method="POST" action="/check/"
                 enctype="multipart/form-data">
         {% csrf_token %}
         

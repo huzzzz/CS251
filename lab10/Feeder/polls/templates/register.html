@@ -14,8 +14,11 @@
 
         {% if registered %}
           <strong>thank you for registering!</strong>
-        <a href="/polls/">Return to the homepage.</a><br />           
-
+        <br>
+        <br>
+        <h1>
+        <a href="/polls/mainpage/">Return to the homepage.</a><br />           
+        </h1>
         {% else %}
           <h1><strong>Register here!</strong></h1><br />
   <h2>      
@@ -23,21 +26,21 @@
     <div class="login-box">
       
       <div class="lb-header">
-          <a href="#" class="active" id="login-box-link">Login</a>
-          <a href="#" id="signup-box-link">Sign Up</a>
+          <!-- <a href="#" class="active" id="login-box-link">Login</a> -->
+          <a href="#" id="signup-box-link">Register</a>
       </div>
       
 
       <div class="social-login">
-        {% load socialaccount %}
+        <!-- {% load socialaccount %}
         <a href="{% provider_login_url "facebook" method="oauth2" %}">
           <i class="fa fa-facebook fa-lg"></i>
             Log in with facebook
         </a>
-
+ -->
         <a href="{% provider_login_url "google" method="oauth2" %}">
             <i class="fa fa-google-plus fa-lg"></i>
-              Log in with Google
+              Sign Up with Google
         </a>
       </div>
    
