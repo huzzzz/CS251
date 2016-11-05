@@ -5,9 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.support.v7.app.AppCompatActivity;
-
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,17 +26,9 @@ import retrofit2.Response;
  */
 public class LoginActivity extends AppCompatActivity implements Callback<GsonModels.UserDetails> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "feeder:feeder", "feeder07:feeder07"
     };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private EditText mEmailView;
@@ -53,20 +42,19 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.email);
 
+        mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         session = new SessionManager(getApplicationContext());
 
@@ -74,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+//                attemptLogin();
                 String username = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
                 if (!username.isEmpty() && !password.isEmpty()) {
@@ -111,50 +99,6 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
-//
-//        // Reset errors.
-//        mEmailView.setError(null);
-//        mPasswordView.setError(null);
-//
-//        // Store values at the time of the login attempt.
-//        String email = mEmailView.getText().toString();
-//        String password = mPasswordView.getText().toString();
-//
-//        boolean cancel = false;
-//        View focusView = null;
-//
-//        // Check for a valid password, if the user entered one.
-//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-//            mPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
-//
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
-//            mEmailView.setError(getString(R.string.error_field_required));
-//            focusView = mEmailView;
-//            cancel = true;
-//        } else if (!isEmailValid(email)) {
-//            mEmailView.setError("User ID is invalid");
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            focusView.requestFocus();
-//        } else {
-//            // Show a progress spinner, and kick off a background task to
-//            // perform the user login attempt.
-//            showProgress(true);
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
-//        }
         String mEmail = mEmailView.getText().toString();
         String mPassword = mPasswordView.getText().toString();
         session.createLoginSession(mEmail, mPassword);
@@ -164,17 +108,6 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
         finish();
     }
 
-    private boolean isEmailValid(String email) {
-        return email.length() > 0;
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 5;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -212,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
     public void onResponse(Call<GsonModels.UserDetails> call, Response<GsonModels.UserDetails> response) {
         if(response.isSuccessful()) {
             GsonModels.UserDetails userDetails = response.body();
-            Toast.makeText(LoginActivity.this, userDetails.getName() + userDetails.getEmail() + userDetails. getRollno(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(LoginActivity.this, userDetails.getName() + userDetails.getEmail() + userDetails. getRollno(), Toast.LENGTH_SHORT).show();
             //Use the userDetails
             if (userDetails.getIslogged() && userDetails.getName() != null){
                 showProgress(true);
@@ -228,78 +161,7 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
 
     @Override
     public void onFailure(Call<GsonModels.UserDetails> call, Throwable t) {
-        Toast.makeText(LoginActivity.this, "onFailure called", Toast.LENGTH_SHORT).show();
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                session.createLoginSession(mEmail, mPassword);
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+        Toast.makeText(LoginActivity.this, "Failed to Connect", Toast.LENGTH_SHORT).show();
     }
 }
 
