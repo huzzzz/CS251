@@ -15,6 +15,9 @@ import com.roomorama.caldroid.CaldroidFragment;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         if (session.isLoggedIn()){
-            Toast.makeText(getApplicationContext(), "User Logged in as: " + session.getUserDetails().get(0), Toast.LENGTH_LONG).show();
+            Set set = session.getUserDetails().entrySet();
+            Iterator i = set.iterator();
+            Map.Entry me = (Map.Entry)i.next();
+            Toast.makeText(getApplicationContext(), "User Logged in as: " + me.getValue(), Toast.LENGTH_LONG).show();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please Log in", Toast.LENGTH_LONG).show();

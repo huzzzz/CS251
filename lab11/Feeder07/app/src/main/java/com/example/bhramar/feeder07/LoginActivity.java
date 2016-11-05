@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements Callback<GsonMod
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-//                attemptLogin();
+                attemptLogin();
                 String username = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
                 if (!username.isEmpty() && !password.isEmpty()) {
